@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_api_sample/api/qitta/model/QiitaArticle.dart';
 import 'package:flutter_api_sample/repository/QiitaRepository.dart';
 import 'package:flutter_api_sample/ui/screen/WebViewScreen.dart';
+import 'package:progress_dialog/progress_dialog.dart';
 
 class HomeScreenViewModel with ChangeNotifier {
 
@@ -20,7 +21,32 @@ class HomeScreenViewModel with ChangeNotifier {
     _qiitaRepository = qiitaRepository ?? QiitaRepository();
   }
 
-  Future<bool> fetchArticle() async {
+  Future<bool> fetchArticle(BuildContext context) async {
+    page += 1;
+    isFinish = false;
+
+    final progress = ProgressDialog(context);
+    progress.show();
+
+    return _qiitaRepository.fetchArticle(page, perPage, query)
+        .then((value) {
+          articles.addAll(value);
+          if (value.length < perPage)
+            isFinish = true;
+        })
+        .catchError((e) {
+          progress.hide();
+          log(e.toString());
+          return Future.value(false);
+        })
+        .whenComplete(() {
+          progress.hide();
+          notifyListeners();
+          return Future.value(true);
+        });
+  }
+
+  Future<bool> loadMore() async {
     page += 1;
     isFinish = false;
 
@@ -40,10 +66,14 @@ class HomeScreenViewModel with ChangeNotifier {
         });
   }
 
-  Future<bool> refresh() async {
+  Future<bool> refresh(BuildContext context) async {
     page = 1;
     articles.clear();
     isFinish = false;
+    notifyListeners();
+
+    final progress = ProgressDialog(context);
+    progress.show();
 
     return _qiitaRepository.fetchArticle(page, perPage, query)
         .then((value) {
@@ -52,10 +82,12 @@ class HomeScreenViewModel with ChangeNotifier {
             isFinish = true;
         })
         .catchError((e) {
+          progress.hide();
           log(e.toString());
           return Future.value(false);
         })
         .whenComplete(() {
+          progress.hide();
           notifyListeners();
           return Future.value(true);
         });

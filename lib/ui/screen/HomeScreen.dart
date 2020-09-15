@@ -32,17 +32,18 @@ class HomeScreenPage extends StatelessWidget {
         title: Text("Home Screen"),
         leading: IconButton(
           icon: const Icon(Icons.search),
-          onPressed: () => context.read<HomeScreenViewModel>().refresh(),
+          onPressed: () => context.read<HomeScreenViewModel>().refresh(context),
         ),
       ),
       body: RefreshIndicator(
+        onRefresh: () => context.read<HomeScreenViewModel>().refresh(context),
         child: ListView.builder(
           itemBuilder: (BuildContext context, int index) {
 
             var length = context.read<HomeScreenViewModel>().articles.length -1;
             if (index == length) {
               // 追加読み込み
-              context.read<HomeScreenViewModel>().fetchArticle();
+              context.read<HomeScreenViewModel>().loadMore();
               // 画面にはローディング表示しておく
               return new Center(
                 child: new Container(
@@ -67,7 +68,6 @@ class HomeScreenPage extends StatelessWidget {
           },
           itemCount: context.watch<HomeScreenViewModel>().articles.length,
         ),
-        onRefresh: () => context.read<HomeScreenViewModel>().refresh(),
       ),
     );
   }
