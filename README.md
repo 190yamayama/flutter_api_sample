@@ -12,12 +12,13 @@ Qiitaの最新記事の一覧を取得する。
 ## 流れ
 
 1.画面を作る
-　今回はスプラッシュ・ホームの２画面構成
+
+　今回はスプラッシュ・ホーム・WebViewの3画面構成
 
 2.retrofit導入
 
 pubspec.yaml
-```
+```yaml
 dependencies:
   http: any
   retrofit: ^1.3.4
@@ -31,10 +32,11 @@ dev_dependencies:
 
 3.API通信のクライアントを作成
 
-part句はbuild_runnerでコードを生成する時のファイル名。
-（多分gはGenerateのgだと思う）
-abstractを作ることによって、実態のQiitaClient.g.dartを自動生成してくれる。
-```
+　part句はbuild_runnerでコードを生成する時のファイル名。
+　（多分gはGenerateのgだと思う）
+　abstractを作ることによって、実体のQiitaClient.g.dartを自動生成してくれる。
+
+```dart
 part 'QiitaClient.g.dart';
 
 @RestApi(baseUrl: "https://qiita.com/api")
@@ -52,12 +54,13 @@ abstract class QiitaClient {
 
 4.リクエスト・レスポンスのデータ型定義
 
-入れ物を準備します。
-ここでもbuild_runnerでコードを生成する時のファイル名を指定する。
+　入れ物を準備します。
+　ここでもbuild_runnerでコードを生成する時のファイル名を指定する。
 
-一つ注意事項としてコード自動生成前は余計なコードを書いておかないこと。
-自動生成に失敗することがあります。
-```
+　一つ注意事項としてコード自動生成前は余計なコードを書いておかないこと。
+　自動生成に失敗することがあります。
+ 
+```dart
 part 'QiitaArticle.g.dart';
 
 // explicitToJsonはクラスの入れ子を可能にするためつけてる
@@ -109,20 +112,20 @@ class QiitaArticle {
 }
 ```
 
-5.実態をgenerateする
+5.実体をgenerateする
 
-ターミナルで以下のコマンドを実行。
+　ターミナルで以下のコマンドを実行。
 
-```
+```cmd
 flutter pub run build_runner build
 ```
-.g.dartファイルが作成されているはず。
+　.g.dartファイルが作成されているはず。
 
 6.データクラスにjsonコンバータを実装する
 
-.g.dartにコンバータの実態ができるので元のコードにfactoryを実装する
+　.g.dartにコンバータの実体ができるので元のコードにfactoryを実装する
 
-```swift
+```dart
 factory QiitaArticle.fromJson(Map<String, dynamic> json) => _$QiitaArticleFromJson(json);
 Map<String, dynamic> toJson() => _$QiitaArticleToJson(this);
 
@@ -133,9 +136,9 @@ String toString() => json.encode(toJson());
 
 7.apiを呼び出すrepository作る
 
-システムの構成によりけりですが、今回はrepositoryを作成してrepositoryの中でClientのインスタンスを生成することにした。
+　システムの構成によりけりですが、今回はrepositoryを作成してrepositoryの中でClientのインスタンスを生成することにした。
 
-```
+```dart
 class QiitaRepository {
 
   final QiitaClient _client;
@@ -157,9 +160,9 @@ class QiitaRepository {
 
 8.画面から呼び出すしてListViewで表示する。
 
-最も簡単な表示で一応追加読み込みできるようにListView.builderで細工してます。プルリフレッシュも効くようにRefreshIndicatorで囲みました。
+　最も簡単な表示で一応追加読み込みできるようにListView.builderで細工してます。プルリフレッシュも効くようにRefreshIndicatorで囲みました。
 
-```
+```dart
 RefreshIndicator(
   child: ListView.builder(
     itemBuilder: (BuildContext context, int index) {
@@ -195,5 +198,8 @@ RefreshIndicator(
   onRefresh: () => context.read<HomeScreenViewModel>().refresh(),
 )
 ```
+
+9.一覧のタイトルをタップでWebViewで記事を表示する
+
 
 以上
