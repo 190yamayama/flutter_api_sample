@@ -13,7 +13,7 @@ class HomeScreenViewModel with ChangeNotifier {
   QiitaRepository _qiitaRepository;
 
   bool isFinish = false;
-  int page = 0;
+  int page = 1;
   List<QiitaArticle> articles = [];
 
   HomeScreenViewModel([QiitaRepository qiitaRepository]) {
@@ -41,7 +41,7 @@ class HomeScreenViewModel with ChangeNotifier {
   }
 
   Future<bool> refresh() async {
-    page = 0;
+    page = 1;
     articles.clear();
     isFinish = false;
 
