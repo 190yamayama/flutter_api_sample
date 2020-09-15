@@ -14,7 +14,7 @@ class QiitaTag {
   });
 
   // ↓　ここは.g.dartを自動生成してから追記
-  // （注意）先に書いておいてもエラーとなりg.dartが生成されない
+  // （注意）先に書いておいてもエラーとなりg.dartが生成されないことがある？
   factory QiitaTag.fromJson(Map<String, dynamic> json) => _$QiitaTagFromJson(json);
   Map<String, dynamic> toJson() => _$QiitaTagToJson(this);
 

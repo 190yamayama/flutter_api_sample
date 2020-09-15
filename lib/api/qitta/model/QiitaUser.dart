@@ -53,7 +53,7 @@ class QiitaUser {
   });
 
   // ↓　ここは.g.dartを自動生成してから追記
-  // （注意）先に書いておいてもエラーとなりg.dartが生成されない
+  // （注意）先に書いておいてもエラーとなりg.dartが生成されないことがある？
   factory QiitaUser.fromJson(Map<String, dynamic> json) => _$QiitaUserFromJson(json);
   Map<String, dynamic> toJson() => _$QiitaUserToJson(this);
 

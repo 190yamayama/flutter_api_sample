@@ -12,7 +12,8 @@ QiitaArticle _$QiitaArticleFromJson(Map<String, dynamic> json) {
     body: json['body'] as String,
     coediting: json['coediting'] as bool,
     commentsCount: json['comments_count'] as int,
-    createdAt: json['created_at'] as String,
+    createdAt:
+        const CustomDateTimeConverter().fromJson(json['created_at'] as String),
     group: json['group'] as String,
     id: json['id'] as String,
     likesCount: json['likes_count'] as int,
@@ -23,7 +24,8 @@ QiitaArticle _$QiitaArticleFromJson(Map<String, dynamic> json) {
             e == null ? null : QiitaTag.fromJson(e as Map<String, dynamic>))
         ?.toList(),
     title: json['title'] as String,
-    updatedAt: json['updated_at'] as String,
+    updatedAt:
+        const CustomDateTimeConverter().fromJson(json['updated_at'] as String),
     url: json['url'] as String,
     user: json['user'] == null
         ? null
@@ -38,7 +40,7 @@ Map<String, dynamic> _$QiitaArticleToJson(QiitaArticle instance) =>
       'body': instance.body,
       'coediting': instance.coediting,
       'comments_count': instance.commentsCount,
-      'created_at': instance.createdAt,
+      'created_at': const CustomDateTimeConverter().toJson(instance.createdAt),
       'group': instance.group,
       'id': instance.id,
       'likes_count': instance.likesCount,
@@ -46,7 +48,7 @@ Map<String, dynamic> _$QiitaArticleToJson(QiitaArticle instance) =>
       'reactions_count': instance.reactionsCount,
       'tags': instance.tags?.map((e) => e?.toJson())?.toList(),
       'title': instance.title,
-      'updated_at': instance.updatedAt,
+      'updated_at': const CustomDateTimeConverter().toJson(instance.updatedAt),
       'url': instance.url,
       'user': instance.user?.toJson(),
       'page_views_count': instance.pageViewsCount,
