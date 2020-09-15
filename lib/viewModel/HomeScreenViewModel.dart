@@ -67,30 +67,12 @@ class HomeScreenViewModel with ChangeNotifier {
   }
 
   Future<bool> refresh(BuildContext context) async {
-    page = 1;
+    page = 0;
     articles.clear();
     isFinish = false;
     notifyListeners();
 
-    final progress = ProgressDialog(context);
-    progress.show();
-
-    return _qiitaRepository.fetchArticle(page, perPage, query)
-        .then((value) {
-          articles = value;
-          if (value.length < 20)
-            isFinish = true;
-        })
-        .catchError((e) {
-          progress.hide();
-          log(e.toString());
-          return Future.value(false);
-        })
-        .whenComplete(() {
-          progress.hide();
-          notifyListeners();
-          return Future.value(true);
-        });
+    return fetchArticle(context);
   }
 
   void moveWebViewScreen(BuildContext context, int index) {
