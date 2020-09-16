@@ -3,8 +3,8 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter_api_sample/api/qitta/model/QiitaArticle.dart';
 import 'package:flutter_api_sample/repository/QiitaRepository.dart';
+import 'package:flutter_api_sample/ui/parts/Dialog.dart';
 import 'package:flutter_api_sample/ui/screen/WebViewScreen.dart';
-import 'package:progress_dialog/progress_dialog.dart';
 
 class HomeScreenViewModel with ChangeNotifier {
 
@@ -13,7 +13,6 @@ class HomeScreenViewModel with ChangeNotifier {
 
   QiitaRepository _qiitaRepository;
 
-  bool isFinish = false;
   int page = 1;
   List<QiitaArticle> articles = [];
 
@@ -21,55 +20,49 @@ class HomeScreenViewModel with ChangeNotifier {
     _qiitaRepository = qiitaRepository ?? QiitaRepository();
   }
 
-  Future<bool> fetchArticle(BuildContext context) async {
+  Future<void> fetchArticle(BuildContext context) async {
     page += 1;
-    isFinish = false;
 
-    final progress = ProgressDialog(context);
-    progress.show();
+    Dialogs.showLoadingDialog(context);
+    notifyListeners();
 
     return _qiitaRepository.fetchArticle(page, perPage, query)
-        .then((value) {
-          articles.addAll(value);
-          if (value.length < perPage)
-            isFinish = true;
-        })
-        .catchError((e) {
-          progress.hide();
-          log(e.toString());
-          return Future.value(false);
-        })
-        .whenComplete(() {
-          progress.hide();
+        .then((result) {
+          if (result == null || result.statusCode != 200) {
+            // ロード中のダイアログを閉じる
+            Navigator.pop(context);
+            Dialogs.showErrorDialog(context, result.errorMessage);
+            notifyListeners();
+            return;
+          }
+
+          articles.addAll(result.result);
+          // ロード中のダイアログを閉じる
+          Navigator.pop(context);
           notifyListeners();
-          return Future.value(true);
+          return;
         });
   }
 
-  Future<bool> loadMore() async {
+  Future<void> loadMore(BuildContext context) async {
     page += 1;
-    isFinish = false;
 
     return _qiitaRepository.fetchArticle(page, perPage, query)
-        .then((value) {
-          articles.addAll(value);
-          if (value.length < perPage)
-            isFinish = true;
-        })
-        .catchError((e) {
-          log(e.toString());
-          return Future.value(false);
-        })
-        .whenComplete(() {
+        .then((result) {
+          if (result == null || result.statusCode != 200) {
+            Dialogs.showErrorDialog(context, result.errorMessage);
+            notifyListeners();
+            return;
+          }
+          articles.addAll(result.result);
           notifyListeners();
-          return Future.value(true);
+          return;
         });
   }
 
-  Future<bool> refresh(BuildContext context) async {
+  Future<void> refresh(BuildContext context) async {
     page = 0;
     articles.clear();
-    isFinish = false;
     notifyListeners();
 
     return fetchArticle(context);

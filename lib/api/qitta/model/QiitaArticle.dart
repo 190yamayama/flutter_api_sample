@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import 'package:flutter_api_sample/util/CustomDateTimeConverter.dart';
+import 'package:flutter_api_sample/api/converter/CustomDateTimeConverter.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:intl/intl.dart';
 import 'package:json_annotation/json_annotation.dart';

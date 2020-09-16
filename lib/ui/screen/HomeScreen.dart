@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_api_sample/api/qitta/model/QiitaUser.dart';
+import 'package:flutter_api_sample/ui/parts/Dialog.dart';
 import 'package:flutter_api_sample/viewModel/HomeScreenViewModel.dart';
 import 'package:provider/provider.dart';
 
@@ -36,14 +37,13 @@ class HomeScreenPage extends StatelessWidget {
         ),
       ),
       body: RefreshIndicator(
-        onRefresh: () => context.read<HomeScreenViewModel>().refresh(context),
+        onRefresh:() => context.read<HomeScreenViewModel>().refresh(context),
         child: ListView.builder(
           itemBuilder: (BuildContext context, int index) {
-
             var length = context.read<HomeScreenViewModel>().articles.length -1;
             if (index == length) {
               // 追加読み込み
-              context.read<HomeScreenViewModel>().loadMore();
+              context.read<HomeScreenViewModel>().loadMore(context);
               // 画面にはローディング表示しておく
               return new Center(
                 child: new Container(

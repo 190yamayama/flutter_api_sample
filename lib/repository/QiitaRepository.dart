@@ -2,6 +2,7 @@
 import 'dart:developer';
 
 import 'package:dio/dio.dart';
+import 'package:flutter_api_sample/api/ApiResult.dart';
 import 'package:flutter_api_sample/api/qitta/QiitaClient.dart';
 import 'package:flutter_api_sample/api/qitta/model/QiitaArticle.dart';
 
@@ -13,12 +14,33 @@ class QiitaRepository {
         _client = client ?? QiitaClient(Dio())
   ;
 
-  Future<List<QiitaArticle>> fetchArticle(int page, int perPage, String query) async {
+  Future<ApiResult> fetchArticle(int page, int perPage, String query) async {
+    // パラメータチェック
+    if (page == null || perPage == null || query == null) {
+      // retrofitのパラメータチェックで引っ掛かったらcatchErrorで拾えない！（retrofit側でなんとかして欲しい）
+      // ので、先にチェックしとく
+      return ApiResult(0, null, "引数が無効です");
+    }
     return await _client.fetchItems(page, perPage, query)
-        .then((value) => value)
+        .then((value) =>  ApiResult(200, value))
         .catchError((e) {
-          log(e);
-          return [];
+          // エラーハンドリングについてのretrofit公式ドキュメント
+          // https://pub.dev/documentation/retrofit/latest/
+          int errorCode = 0;
+          String errorMessage = "";
+          switch (e.runtimeType) {
+            case DioError:
+              // 失敗した応答のエラーコードとメッセージを取得するサンプル
+              // ここでエラーコードのハンドリングると良さげ
+              final res = (e as DioError).response;
+              log("Got error : ${res.statusCode} -> ${res.statusMessage}");
+              errorCode = res.statusCode;
+              errorMessage = res.statusMessage;
+              break;
+            default:
+          }
+          return ApiResult(errorCode, null, errorMessage);
         });
   }
+
 }
