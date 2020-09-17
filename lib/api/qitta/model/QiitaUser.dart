@@ -66,6 +66,12 @@ class QiitaUser {
     var userName = (this.name ?? "").trim().isEmpty ? anonymousUserName : "${this.name}";
     return "$userNameさん";
   }
+
+  get followersCountString {
+    if (followersCount == null || followersCount == 0)
+      return "-";
+    return "$followersCount";
+  }
   // ↑　ここは.g.dartを自動生成してから追記
 
 }

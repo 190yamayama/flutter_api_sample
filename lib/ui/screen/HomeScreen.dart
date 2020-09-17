@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_api_sample/api/qitta/model/QiitaUser.dart';
-import 'package:flutter_api_sample/ui/parts/Dialog.dart';
 import 'package:flutter_api_sample/viewModel/HomeScreenViewModel.dart';
 import 'package:provider/provider.dart';
 
@@ -30,7 +29,8 @@ class HomeScreenPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Home Screen"),
+        title: Text("Qiita 新着記事一覧"),
+        backgroundColor: Colors.greenAccent,
         leading: IconButton(
           icon: const Icon(Icons.search),
           onPressed: () => context.read<HomeScreenViewModel>().refresh(context),
@@ -73,67 +73,157 @@ class HomeScreenPage extends StatelessWidget {
   }
 
   Widget rowWidget(BuildContext context, int index) {
-    var article = context.read<HomeScreenViewModel>().articles[index];
     return Column(
-      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      mainAxisAlignment: MainAxisAlignment.center,
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Row(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.end,
-            children: [
-              Flexible(child:
-                Container(
-                  margin: const EdgeInsets.all(3.0),
-                  padding: const EdgeInsets.all(3.0),
-                  decoration: BoxDecoration(
-                      border: Border.all(color: Colors.orange)
-                  ),
-                  child: Text(
-                      (article.user?.displayUserName ?? QiitaUser.anonymousUserName) + "が${article.createdAtString}に投稿しました！",
-                      style: TextStyle(fontSize: 17, fontStyle: FontStyle.italic)
-                  ),
-                ),
-              ),
-            ]
-        ),
-        Row(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Container(
-                margin: const EdgeInsets.all(3.0),
-                padding: const EdgeInsets.all(3.0),
-                decoration: BoxDecoration(
-                    border: Border.all(color: Colors.green)
-                ),
-                child: Text(
-                    "LGTM",
-                    style: TextStyle(fontSize: 18, fontStyle: FontStyle.italic, color: Colors.green)
-                ),
-              ),
-              Text(
-                  article.likesCountString,
-                  style: TextStyle(fontSize: 15, fontStyle: FontStyle.italic)
-              ),
-            ]
-        ),
-        Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              Flexible(child:
-              FlatButton(
+        userRow(context, index),
+        titleRow(context, index),
+        tagsRow(context, index),
+        postedDateRow(context, index),
+        lgtmRow(context, index),
+      ],
+    );
+  }
+
+  Widget userRow(BuildContext context, int index) {
+    var article = context.read<HomeScreenViewModel>().articles[index];
+    return Wrap(
+        spacing: 5.0,
+        crossAxisAlignment: WrapCrossAlignment.center,
+        children: [
+          Flexible(child:
+          Text(
+            (article.user?.displayUserName ?? QiitaUser.anonymousUserName) ,
+            style: TextStyle(fontSize: 16, fontStyle: FontStyle.italic),
+          )
+          ),
+          Container(
+            margin: const EdgeInsets.all(3.0),
+            padding: const EdgeInsets.all(3.0),
+            decoration: BoxDecoration(
+              border: Border.all(color: Colors.green),
+              borderRadius: BorderRadius.circular(5),
+            ),
+            child: Text("Followers",
+                style: TextStyle(
+                    fontSize: 18,
+                    fontStyle: FontStyle.italic,
+                    color: Colors.green
+                )
+            ),
+          ),
+          Text(
+              "${article.user.followersCountString}",
+              style: TextStyle(
+                  fontSize: 20,
+                  fontStyle: FontStyle.italic
+              )
+          )
+        ]
+    );
+  }
+
+  Widget titleRow(BuildContext context, int index) {
+    var article = context.read<HomeScreenViewModel>().articles[index];
+    return Row(
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Flexible(
+              child: FlatButton(
                   child: Text(
                     "${article.title}",
-                    style: TextStyle(color: Colors.blue, decoration: TextDecoration.underline,),
+                    style: TextStyle(
+                        color: Colors.blue,
+                        decoration: TextDecoration.underline,
+                        fontSize: 16
+                    ),
                   ),
                   onPressed: () async {
                     context.read<HomeScreenViewModel>().moveWebViewScreen(context, index);
                   }
               )
-              ),
-            ]
+          )
+        ]
+    );
+  }
+
+  Widget tagsRow(BuildContext context, int index) {
+    var article = context.read<HomeScreenViewModel>().articles[index];
+    if (article.tags.length <= 0)
+      return null;
+
+    var tagColor = Color.fromRGBO(200, 200, 200, 0.5);
+    var tags = article.tags.expand((e) => {
+      Container(
+        margin: const EdgeInsets.all(3.0),
+        padding: const EdgeInsets.all(3.0),
+        decoration: BoxDecoration(
+          border: Border.all(color: tagColor),
+          color: tagColor,
+          borderRadius: BorderRadius.circular(5),
         ),
-      ],
+        child: Text(e.name,
+            style:
+            TextStyle(
+                fontSize: 14,
+                fontStyle: FontStyle.italic,
+                color: Colors.black,
+                backgroundColor: tagColor,
+            )
+        ),
+      )
+
+    }).toList();
+    return Wrap(spacing: 5.0, crossAxisAlignment: WrapCrossAlignment.center, children: tags);
+  }
+
+  Widget postedDateRow(BuildContext context, int index) {
+    var article = context.read<HomeScreenViewModel>().articles[index];
+    return Wrap(
+        spacing: 0.0,
+        crossAxisAlignment: WrapCrossAlignment.center,
+        children: [
+          Text(
+            "を${article.createdAtString}に投稿しました！",
+            style: TextStyle(fontSize: 16, fontStyle: FontStyle.italic),
+          )
+        ]
+    );
+  }
+
+  Widget lgtmRow(BuildContext context, int index) {
+    var article = context.read<HomeScreenViewModel>().articles[index];
+    var lgtmColor = Colors.green;
+    return Wrap(
+        spacing: 5.0,
+        crossAxisAlignment: WrapCrossAlignment.center,
+        children: [
+          Container(
+            margin: const EdgeInsets.all(3.0),
+            padding: const EdgeInsets.all(3.0),
+            decoration: BoxDecoration(
+              border: Border.all(color: lgtmColor),
+              borderRadius: BorderRadius.circular(5),
+            ),
+            child: Text(
+                "LGTM",
+                style: TextStyle(
+                    fontSize: 18,
+                    fontStyle: FontStyle.italic,
+                    color: lgtmColor,
+                )
+            ),
+          ),
+          Text(
+            article.likesCountString,
+            style: TextStyle(
+                fontSize: 20,
+                fontStyle: FontStyle.italic,
+            )
+          ),
+        ]
     );
   }
 
