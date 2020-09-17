@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_api_sample/api/ApiError.dart';
 import 'package:flutter_api_sample/api/qitta/model/QiitaArticle.dart';
 import 'package:flutter_api_sample/repository/QiitaRepository.dart';
 import 'package:flutter_api_sample/ui/parts/Dialog.dart';
@@ -28,7 +29,7 @@ class HomeScreenViewModel with ChangeNotifier {
 
     return _qiitaRepository.fetchArticle(page, perPage, query)
         .then((result) {
-          if (result == null || result.statusCode != 200) {
+          if (result == null || result.statusCode != ApiErrorType.OK.code) {
             // ロード中のダイアログを閉じる
             Navigator.pop(context);
             Dialogs.showErrorDialog(context, result.errorMessage);
@@ -49,7 +50,7 @@ class HomeScreenViewModel with ChangeNotifier {
 
     return _qiitaRepository.fetchArticle(page, perPage, query)
         .then((result) {
-          if (result == null || result.statusCode != 200) {
+          if (result == null || result.statusCode != ApiErrorType.OK.code) {
             Dialogs.showErrorDialog(context, result.errorMessage);
             notifyListeners();
             return;

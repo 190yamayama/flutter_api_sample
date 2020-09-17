@@ -3,6 +3,7 @@ import 'dart:developer';
 
 import 'package:dio/dio.dart';
 import 'package:flutter_api_sample/api/ApiResult.dart';
+import 'package:flutter_api_sample/api/ApiError.dart';
 import 'package:flutter_api_sample/api/qitta/QiitaClient.dart';
 import 'package:flutter_api_sample/api/qitta/model/QiitaArticle.dart';
 
@@ -19,10 +20,10 @@ class QiitaRepository {
     if (page == null || perPage == null || query == null) {
       // retrofitのパラメータチェックで引っ掛かったらcatchErrorで拾えない！（retrofit側でなんとかして欲しい）
       // ので、先にチェックしとく
-      return ApiResult(0, null, "引数が無効です");
+      return ApiResult(ApiErrorType.BadRequest.code, null, "引数が無効です");
     }
     return await _client.fetchItems(page, perPage, query)
-        .then((value) =>  ApiResult(200, value))
+        .then((value) =>  ApiResult(ApiErrorType.OK.code, value))
         .catchError((e) {
           // エラーハンドリングについてのretrofit公式ドキュメント
           // https://pub.dev/documentation/retrofit/latest/
@@ -39,7 +40,12 @@ class QiitaRepository {
               break;
             default:
           }
-          return ApiResult(errorCode, null, errorMessage);
+          var apiError = ApiError.convert(errorCode);
+          if (apiError == ApiErrorType.other) {
+            return ApiResult(errorCode, null, errorMessage);
+          } else {
+            return ApiResult(apiError.code, null, errorMessage);
+          }
         });
   }
 
