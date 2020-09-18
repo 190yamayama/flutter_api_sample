@@ -40,6 +40,7 @@ class HomeScreenPage extends StatelessWidget {
         onRefresh:() => context.read<HomeScreenViewModel>().refresh(context),
         child: ListView.builder(
           itemBuilder: (BuildContext context, int index) {
+
             var length = context.read<HomeScreenViewModel>().articles.length -1;
             if (index == length) {
               // 追加読み込み
@@ -58,6 +59,7 @@ class HomeScreenPage extends StatelessWidget {
               return null;
             }
 
+            // 行アイテム返却
             return Container(
               child: rowWidget(context, index),
               alignment: Alignment.center,
@@ -92,11 +94,11 @@ class HomeScreenPage extends StatelessWidget {
         spacing: 5.0,
         crossAxisAlignment: WrapCrossAlignment.center,
         children: [
-          Flexible(child:
-          Text(
-            (article.user?.displayUserName ?? QiitaUser.anonymousUserName) ,
-            style: TextStyle(fontSize: 16, fontStyle: FontStyle.italic),
-          )
+          Flexible(
+              child: Text(
+                (article.user?.displayUserName ?? QiitaUser.anonymousUserName) ,
+                style: TextStyle(fontSize: 16, fontStyle: FontStyle.italic),
+              )
           ),
           Container(
             margin: const EdgeInsets.all(3.0),
@@ -105,7 +107,8 @@ class HomeScreenPage extends StatelessWidget {
               border: Border.all(color: Colors.green),
               borderRadius: BorderRadius.circular(5),
             ),
-            child: Text("Followers",
+            child: Text(
+                "Followers",
                 style: TextStyle(
                     fontSize: 18,
                     fontStyle: FontStyle.italic,
@@ -165,18 +168,21 @@ class HomeScreenPage extends StatelessWidget {
           borderRadius: BorderRadius.circular(5),
         ),
         child: Text(e.name,
-            style:
-            TextStyle(
-                fontSize: 14,
-                fontStyle: FontStyle.italic,
-                color: Colors.black,
-                backgroundColor: tagColor,
+            style: TextStyle(
+              fontSize: 14,
+              fontStyle: FontStyle.italic,
+              color: Colors.black,
+              backgroundColor: tagColor,
             )
         ),
       )
-
     }).toList();
-    return Wrap(spacing: 5.0, crossAxisAlignment: WrapCrossAlignment.center, children: tags);
+
+    return Wrap(
+        spacing: 5.0,
+        crossAxisAlignment: WrapCrossAlignment.center,
+        children: tags
+    );
   }
 
   Widget postedDateRow(BuildContext context, int index) {
@@ -210,18 +216,18 @@ class HomeScreenPage extends StatelessWidget {
             child: Text(
                 "LGTM",
                 style: TextStyle(
-                    fontSize: 18,
-                    fontStyle: FontStyle.italic,
-                    color: lgtmColor,
+                  fontSize: 18,
+                  fontStyle: FontStyle.italic,
+                  color: lgtmColor,
                 )
             ),
           ),
           Text(
-            article.likesCountString,
-            style: TextStyle(
+              article.likesCountString,
+              style: TextStyle(
                 fontSize: 20,
                 fontStyle: FontStyle.italic,
-            )
+              )
           ),
         ]
     );
