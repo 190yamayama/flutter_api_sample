@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
 
 class Dialogs {
-  static Future<void> showLoadingDialog(BuildContext context) async {
+  final BuildContext context;
+
+  Dialogs({this.context});
+
+  Future<void> showLoadingDialog() async {
     return showDialog<void>(
         context: context,
         barrierDismissible: false,
@@ -24,7 +28,7 @@ class Dialogs {
         });
   }
 
-  static void showErrorDialog(BuildContext context, String message) {
+  void showErrorDialog(String message) {
     showDialog(
       context: context,
       builder: (context) {
@@ -41,4 +45,9 @@ class Dialogs {
       },
     );
   }
+
+  void closeDialog() {
+    Navigator.pop(context);
+  }
+
 }

@@ -1,10 +1,8 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_api_sample/api/ApiError.dart';
 import 'package:flutter_api_sample/api/qitta/model/QiitaArticle.dart';
 import 'package:flutter_api_sample/repository/QiitaRepository.dart';
-import 'package:flutter_api_sample/ui/parts/Dialog.dart';
+import 'package:flutter_api_sample/ui/parts/Dialogs.dart';
 import 'package:flutter_api_sample/ui/screen/WebViewScreen.dart';
 
 class HomeScreenViewModel with ChangeNotifier {
@@ -24,22 +22,23 @@ class HomeScreenViewModel with ChangeNotifier {
   Future<void> fetchArticle(BuildContext context) async {
     page += 1;
 
-    Dialogs.showLoadingDialog(context);
-    notifyListeners();
+    final dialogs = Dialogs(context: context);
+    dialogs.showLoadingDialog();
 
     return _qiitaRepository.fetchArticle(page, perPage, query)
         .then((result) {
           if (result == null || result.statusCode != ApiErrorType.OK.code) {
             // ロード中のダイアログを閉じる
-            Navigator.pop(context);
-            Dialogs.showErrorDialog(context, result.errorMessage);
+            dialogs.closeDialog();
+            // エラーメッセージのダイアログを表示する
+            dialogs.showErrorDialog(result.errorMessage);
             notifyListeners();
             return;
           }
 
           articles.addAll(result.result);
           // ロード中のダイアログを閉じる
-          Navigator.pop(context);
+          dialogs.closeDialog();
           notifyListeners();
           return;
         });
@@ -51,7 +50,9 @@ class HomeScreenViewModel with ChangeNotifier {
     return _qiitaRepository.fetchArticle(page, perPage, query)
         .then((result) {
           if (result == null || result.statusCode != ApiErrorType.OK.code) {
-            Dialogs.showErrorDialog(context, result.errorMessage);
+            // エラーメッセージのダイアログを表示する
+            final dialogs = Dialogs(context: context);
+            dialogs.showErrorDialog(result.errorMessage);
             notifyListeners();
             return;
           }
