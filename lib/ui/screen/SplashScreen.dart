@@ -5,6 +5,8 @@ import 'package:provider/provider.dart';
 class SplashScreen extends StatefulWidget {
   SplashScreen({Key key}) : super(key: key);
 
+  static const String KEY_SPLASH_IMAGE = "splash_image";
+
   @override
   _SplashScreenState createState() => _SplashScreenState();
 }
@@ -32,7 +34,12 @@ class SplashScreenPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Center(child: Image(image: AssetImage('assets/splash.png'))),
+      body: Center(
+          child: Image(
+              key: Key(SplashScreen.KEY_SPLASH_IMAGE),
+              image: AssetImage('assets/splash.png')
+          ),
+      ),
     );
   }
 }

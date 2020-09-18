@@ -7,6 +7,13 @@ import 'package:provider/provider.dart';
 class HomeScreen extends StatefulWidget {
   HomeScreen({Key key}) : super(key: key);
 
+  static const String KEY_APP_BAR = "app_bar";
+  static const String KEY_APP_BAR_TITLE = "app_bar_title";
+  static const String KEY_APP_BAR_ICON = "app_bar_icon";
+  static const String KEY_APP_BAR_ICON_BUTTON = "app_bar_icon_button";
+  static const String KEY_APP_LIST_VIEW = "app_list_view";
+  static const String KEY_APP_LIST_VIEW_ROW = "app_list_view_row";
+
   @override
   _HomeScreenState createState() => _HomeScreenState();
 }
@@ -29,16 +36,25 @@ class HomeScreenPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Qiita 新着記事一覧"),
+        key: Key(HomeScreen.KEY_APP_BAR),
+        title: Text(
+            "Qiita 新着記事一覧",
+            key: Key(HomeScreen.KEY_APP_BAR_TITLE),
+        ),
         backgroundColor: Colors.greenAccent,
         leading: IconButton(
-          icon: const Icon(Icons.search),
+          key: Key(HomeScreen.KEY_APP_BAR_ICON_BUTTON),
+          icon: const Icon(
+              Icons.search,
+              key: Key(HomeScreen.KEY_APP_BAR_ICON),
+          ),
           onPressed: () => context.read<HomeScreenViewModel>().refresh(context),
         ),
       ),
       body: RefreshIndicator(
         onRefresh:() => context.read<HomeScreenViewModel>().refresh(context),
         child: ListView.builder(
+          key: Key(HomeScreen.KEY_APP_LIST_VIEW),
           itemBuilder: (BuildContext context, int index) {
 
             var length = context.read<HomeScreenViewModel>().articles.length -1;
@@ -61,6 +77,7 @@ class HomeScreenPage extends StatelessWidget {
 
             // 行アイテム返却
             return Container(
+              key: Key(HomeScreen.KEY_APP_LIST_VIEW_ROW),
               child: rowWidget(context, index),
               alignment: Alignment.center,
               decoration: BoxDecoration(

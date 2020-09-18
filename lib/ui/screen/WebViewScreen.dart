@@ -19,6 +19,8 @@ class WebViewScreen extends StatefulWidget {
   WebViewScreen({Key key, @required this.urlString}) : super(key: key);
   final String urlString;
 
+  static const String KEY_WEB_VIEW = "web_view";
+
   @override
   _WebViewScreenState createState() => _WebViewScreenState();
 }
@@ -41,11 +43,13 @@ class WebViewScreenPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return WebviewScaffold(
+      key: Key(WebViewScreen.KEY_WEB_VIEW),
       url: urlString,
       javascriptChannels: jsChannels,
       mediaPlaybackRequiresUserGesture: false,
       appBar: AppBar(
         title: const Text(""),
+        backgroundColor: Colors.greenAccent,
       ),
       withZoom: true,
       withLocalStorage: true,
