@@ -94,6 +94,19 @@ class HomeScreenPage extends StatelessWidget {
         spacing: 5.0,
         crossAxisAlignment: WrapCrossAlignment.center,
         children: [
+          Container(
+              width: 40.0,
+              height: 40.0,
+              decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  image: DecorationImage(
+                      fit: BoxFit.fill,
+                      image: NetworkImage(
+                          article.user?.profileImageUrl,
+                      )
+                  )
+              )
+          ),
           Flexible(
               child: Text(
                 (article.user?.displayUserName ?? QiitaUser.anonymousUserName) ,
