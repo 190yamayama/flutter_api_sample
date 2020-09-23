@@ -165,7 +165,7 @@ class HomeScreenPage extends StatelessWidget {
                 style: TextStyle(
                     color: Colors.blue,
                     decoration: TextDecoration.underline,
-                    fontSize: 16
+                    fontSize: 20
                 ),
               ),
               onPressed: () async {
