@@ -2,10 +2,9 @@
 import 'dart:developer';
 
 import 'package:dio/dio.dart';
-import 'package:flutter_api_sample/api/ApiResult.dart';
-import 'package:flutter_api_sample/api/ApiError.dart';
+import 'package:flutter_api_sample/api/ApiResponse.dart';
+import 'package:flutter_api_sample/api/ApiResposeType.dart';
 import 'package:flutter_api_sample/api/qitta/QiitaClient.dart';
-import 'package:flutter_api_sample/api/qitta/model/QiitaArticle.dart';
 
 class QiitaRepository {
 
@@ -15,15 +14,16 @@ class QiitaRepository {
         _client = client ?? QiitaClient(Dio())
   ;
 
-  Future<ApiResult> fetchArticle(int page, int perPage, String query) async {
+  Future<ApiResponse> fetchArticle(int page, int perPage, String query) async {
     // パラメータチェック
     if (page == null || perPage == null || query == null) {
       // retrofitのパラメータチェックで引っ掛かったらcatchErrorで拾えない！（retrofit側でなんとかして欲しい）
       // ので、先にチェックしとく
-      return ApiResult(ApiErrorType.BadRequest.code, null, "引数が無効です");
+      return ApiResponse(ApiResponseType.BadRequest, null);
     }
+
     return await _client.fetchItems(page, perPage, query)
-        .then((value) =>  ApiResult(ApiErrorType.OK.code, value))
+        .then((value) =>  ApiResponse(ApiResponseType.OK, value))
         .catchError((e) {
           // エラーハンドリングについてのretrofit公式ドキュメント
           // https://pub.dev/documentation/retrofit/latest/
@@ -40,12 +40,9 @@ class QiitaRepository {
               break;
             default:
           }
-          var apiError = ApiError.convert(errorCode);
-          if (apiError == ApiErrorType.other) {
-            return ApiResult(errorCode, null, errorMessage);
-          } else {
-            return ApiResult(apiError.code, null, errorMessage);
-          }
+          var apiResponseType = ApiResponse.convert(errorCode);
+          // とりあえずここではサーバー側のエラーメッセージを表示するようにしとく
+          return ApiResponse(apiResponseType, errorMessage);
         });
   }
 

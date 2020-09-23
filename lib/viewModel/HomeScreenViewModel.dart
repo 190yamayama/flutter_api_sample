@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_api_sample/api/ApiError.dart';
+import 'package:flutter_api_sample/api/ApiResposeType.dart';
 import 'package:flutter_api_sample/api/qitta/model/QiitaArticle.dart';
 import 'package:flutter_api_sample/repository/QiitaRepository.dart';
 import 'package:flutter_api_sample/ui/parts/Dialogs.dart';
@@ -19,7 +19,7 @@ class HomeScreenViewModel with ChangeNotifier {
     _qiitaRepository = qiitaRepository ?? QiitaRepository();
   }
 
-  Future<void> fetchArticle(BuildContext context) async {
+  Future<bool> fetchArticle(BuildContext context) async {
     page += 1;
 
     final dialogs = Dialogs(context: context);
@@ -27,42 +27,42 @@ class HomeScreenViewModel with ChangeNotifier {
 
     return _qiitaRepository.fetchArticle(page, perPage, query)
         .then((result) {
-          if (result == null || result.statusCode != ApiErrorType.OK.code) {
+          if (result == null || result.apiStatus.code != ApiResponseType.OK.code) {
             // ロード中のダイアログを閉じる
             dialogs.closeDialog();
             // エラーメッセージのダイアログを表示する
-            dialogs.showErrorDialog(result.errorMessage);
+            dialogs.showErrorDialog(result.message);
             notifyListeners();
-            return;
+            return false;
           }
 
           articles.addAll(result.result);
           // ロード中のダイアログを閉じる
           dialogs.closeDialog();
           notifyListeners();
-          return;
+          return true;
         });
   }
 
-  Future<void> loadMore(BuildContext context) async {
+  Future<bool> loadMore(BuildContext context) async {
     page += 1;
 
     return _qiitaRepository.fetchArticle(page, perPage, query)
         .then((result) {
-          if (result == null || result.statusCode != ApiErrorType.OK.code) {
+          if (result == null || result.apiStatus.code != ApiResponseType.OK.code) {
             // エラーメッセージのダイアログを表示する
             final dialogs = Dialogs(context: context);
-            dialogs.showErrorDialog(result.errorMessage);
+            dialogs.showErrorDialog(result.message);
             notifyListeners();
-            return;
+            return false;
           }
           articles.addAll(result.result);
           notifyListeners();
-          return;
+          return true;
         });
   }
 
-  Future<void> refresh(BuildContext context) async {
+  Future<bool> refresh(BuildContext context) async {
     page = 0;
     articles.clear();
     notifyListeners();
