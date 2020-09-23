@@ -6,25 +6,94 @@
 // tree, read text, and verify that the values of widget properties are correct.
 
 import 'package:flutter/material.dart';
+import 'package:flutter_api_sample/ui/screen/HomeScreen.dart';
+import 'package:flutter_api_sample/ui/screen/SplashScreen.dart';
 import 'package:flutter_test/flutter_test.dart';
 
-import 'package:flutter_api_sample/main.dart';
-
+// テストコマンド
+// flutter test test/widget_test.dart
 void main() {
-//  testWidgets('Counter increments smoke test', (WidgetTester tester) async {
-//    // Build our app and trigger a frame.
-//    await tester.pumpWidget(MyApp());
-//
-//    // Verify that our counter starts at 0.
-//    expect(find.text('0'), findsOneWidget);
-//    expect(find.text('1'), findsNothing);
-//
-//    // Tap the '+' icon and trigger a frame.
-//    await tester.tap(find.byIcon(Icons.add));
-//    await tester.pump();
-//
-//    // Verify that our counter has incremented.
-//    expect(find.text('0'), findsNothing);
-//    expect(find.text('1'), findsOneWidget);
-//  });
+
+  // widgetのテストについて公式リファレンス
+  // https://flutter.dev/docs/cookbook/testing/widget/introduction
+
+  group('Splash Screen Test', () {
+
+    testWidgets('Start Screen', (WidgetTester tester) async {
+
+      // runAsyncでテストしないと「タイマーが残ってる」というエラーがでる…
+      // WidgetTestの中では、タイマーは基本的にフェイクで、進んでいないそうです。
+      // それで、Widgetツリーのタイマーは発火されずに残ってしまう、ということのよう
+      // で、runAsyncで実行するとタイマーを進めることができる。ということらしい。
+      await tester.runAsync(() async {
+
+        // テスト対象画面呼び出し
+        await tester.pumpWidget(
+          MaterialApp(
+            title: 'Flutter Test',
+            theme: ThemeData(
+              primarySwatch: Colors.blue,
+            ),
+            home: SplashScreen(),
+          ),
+        );
+
+        // スプラッシュ画像が表示されているか？
+        final splashImage = find.byKey(Key(SplashScreen.KEY_SPLASH_IMAGE));
+        expect(splashImage, findsOneWidget);
+
+      });
+
+    });
+
+  });
+
+
+  group('Home screen test', () {
+
+    testWidgets('Start Screen', (WidgetTester tester) async {
+
+      // runAsyncでテストしないとタイマーが残ってるというエラーがでる…
+      // WidgetTestの中では、タイマーは基本的にフェイクで、進んでいないそうです。
+      // それで、Widgetツリーのタイマーは発火されずに残ってしまう、ということのよう
+      // で、runAsyncで実行するとタイマーを進めることができる。ということらしい。
+      await tester.runAsync(() async {
+
+        // テスト対象画面呼び出し
+        await tester.pumpWidget(
+          MaterialApp(
+            title: 'Flutter Test',
+            theme: ThemeData(
+              primarySwatch: Colors.blue,
+            ),
+            home: HomeScreen(),
+          ),
+        );
+
+        // タイトルが表示されているか？
+        final title = find.byKey(Key(HomeScreen.KEY_APP_BAR_TITLE));
+        expect(title, findsOneWidget);
+
+        // 検索アイコンが表示されているか？
+        final searchIcon = find.byKey(Key(HomeScreen.KEY_APP_BAR_ICON));
+        expect(searchIcon, findsOneWidget);
+
+        // 検索ボタンが表示されているか？
+        final searchButton = find.byKey(Key(HomeScreen.KEY_APP_BAR_ICON_BUTTON));
+        expect(searchButton, findsOneWidget);
+
+        // リストビューが表示されているか？
+        final listView = find.byKey(Key(HomeScreen.KEY_APP_LIST_VIEW));
+        expect(listView, findsOneWidget);
+
+        // 検索実行
+        await tester.tap(searchButton);
+
+      });
+
+    });
+
+  });
+
+
 }
