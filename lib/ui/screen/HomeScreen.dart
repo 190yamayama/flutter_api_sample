@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_api_sample/api/qitta/model/QiitaUser.dart';
 import 'package:flutter_api_sample/viewModel/HomeScreenViewModel.dart';
@@ -116,9 +117,9 @@ class HomeScreenPage extends StatelessWidget {
                   shape: BoxShape.circle,
                   image: DecorationImage(
                       fit: BoxFit.fill,
-                      image: NetworkImage(
-                          article.user?.profileImageUrl,
-                      )
+                      image: CachedNetworkImageProvider(
+                          article.user.profileImageUrl,
+                      ),
                   )
               )
           ),
