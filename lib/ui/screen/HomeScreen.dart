@@ -79,7 +79,7 @@ class HomeScreenPage extends StatelessWidget {
             return Container(
               key: Key(HomeScreen.KEY_APP_LIST_VIEW_ROW),
               child: rowWidget(context, index),
-              alignment: Alignment.center,
+              alignment: Alignment.bottomLeft,
               decoration: BoxDecoration(
                   border: Border.all(color: Colors.grey)
               ),
@@ -92,9 +92,7 @@ class HomeScreenPage extends StatelessWidget {
   }
 
   Widget rowWidget(BuildContext context, int index) {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      crossAxisAlignment: CrossAxisAlignment.start,
+    return Wrap(
       children: [
         userRow(context, index),
         titleRow(context, index),
@@ -108,7 +106,7 @@ class HomeScreenPage extends StatelessWidget {
   Widget userRow(BuildContext context, int index) {
     var article = context.read<HomeScreenViewModel>().articles[index];
     return Wrap(
-        spacing: 5.0,
+        spacing: 8.0,
         crossAxisAlignment: WrapCrossAlignment.center,
         children: [
           Container(
@@ -124,11 +122,9 @@ class HomeScreenPage extends StatelessWidget {
                   )
               )
           ),
-          Flexible(
-              child: Text(
-                (article.user?.displayUserName ?? QiitaUser.anonymousUserName) ,
-                style: TextStyle(fontSize: 16, fontStyle: FontStyle.italic),
-              )
+          Text(
+            (article.user?.displayUserName ?? QiitaUser.anonymousUserName) ,
+            style: TextStyle(fontSize: 16, fontStyle: FontStyle.italic),
           ),
           Container(
             margin: const EdgeInsets.all(3.0),
@@ -159,24 +155,21 @@ class HomeScreenPage extends StatelessWidget {
 
   Widget titleRow(BuildContext context, int index) {
     var article = context.read<HomeScreenViewModel>().articles[index];
-    return Row(
-        mainAxisAlignment: MainAxisAlignment.start,
-        crossAxisAlignment: CrossAxisAlignment.start,
+    return Wrap(
+        crossAxisAlignment: WrapCrossAlignment.start,
         children: [
-          Flexible(
-              child: FlatButton(
-                  child: Text(
-                    "${article.title}",
-                    style: TextStyle(
-                        color: Colors.blue,
-                        decoration: TextDecoration.underline,
-                        fontSize: 16
-                    ),
-                  ),
-                  onPressed: () async {
-                    context.read<HomeScreenViewModel>().moveWebViewScreen(context, index);
-                  }
-              )
+          FlatButton(
+              child: Text(
+                "${article.title}",
+                style: TextStyle(
+                    color: Colors.blue,
+                    decoration: TextDecoration.underline,
+                    fontSize: 16
+                ),
+              ),
+              onPressed: () async {
+                context.read<HomeScreenViewModel>().moveWebViewScreen(context, index);
+              }
           )
         ]
     );
@@ -209,7 +202,7 @@ class HomeScreenPage extends StatelessWidget {
     }).toList();
 
     return Wrap(
-        spacing: 5.0,
+        spacing: 8.0,
         crossAxisAlignment: WrapCrossAlignment.center,
         children: tags
     );
@@ -218,7 +211,7 @@ class HomeScreenPage extends StatelessWidget {
   Widget postedDateRow(BuildContext context, int index) {
     var article = context.read<HomeScreenViewModel>().articles[index];
     return Wrap(
-        spacing: 0.0,
+        alignment: WrapAlignment.start,
         crossAxisAlignment: WrapCrossAlignment.center,
         children: [
           Text(
@@ -233,7 +226,7 @@ class HomeScreenPage extends StatelessWidget {
     var article = context.read<HomeScreenViewModel>().articles[index];
     var lgtmColor = Colors.green;
     return Wrap(
-        spacing: 5.0,
+        alignment: WrapAlignment.start,
         crossAxisAlignment: WrapCrossAlignment.center,
         children: [
           Container(
