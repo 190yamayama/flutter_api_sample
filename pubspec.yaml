@@ -33,7 +33,7 @@ dependencies:
   json_annotation: ^3.0.1
   cached_network_image: ^2.3.2+1
 
-  flutter_webview_plugin: ^0.3.11 # webViewのライブラリ
+  webview_flutter: ^0.3.24 # webViewのライブラリ
 
   intl: ^0.16.1
 
