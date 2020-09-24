@@ -42,20 +42,17 @@ void main() {
 
       // pull refresh
       final listView = find.byValueKey(WidgetKey.KEY_HOME_LIST_VIEW);
-      await driver.scroll(listView, 0, 300.0, Duration(milliseconds: 500));
+      await driver.scroll(listView, 0, 500, Duration(milliseconds: 500));
 
       // 記事詳細を開く
       final title = find.byValueKey(WidgetKey.KEY_HOME_LIST_VIEW_ROW_TITLE + "_0");
       await driver.tap(title);
 
-      // コールバックがキューからなくなるまでまつ
-      await driver.waitUntilNoTransientCallbacks();
-
-      final back = find.byValueKey(WidgetKey.KEY_WEB_APP_BAR_ICON_BUTTON);
-      final webView = find.byValueKey(WidgetKey.KEY_WEB_WEB_VIEW);
-      await driver.scrollUntilVisible(webView, back, dyScroll: -50.0);
+      // レンダリングが終わるまでまつ
+      await driver.waitUntilFirstFrameRasterized();
 
       // 戻る
+      final back = find.byValueKey(WidgetKey.KEY_WEB_APP_BAR_ICON_BUTTON);
       await driver.tap(back);
     }, timeout: Timeout(Duration(seconds: 40))); // こんな感じでタイムアウトの秒数を変更できる
 
@@ -77,15 +74,11 @@ void main() {
       // レンダリングが終わるまでまつ
       await driver.waitUntilFirstFrameRasterized();
 
+      // 戻る
       final back = find.byValueKey(WidgetKey.KEY_WEB_APP_BAR_ICON_BUTTON);
-      final webView = find.byValueKey(WidgetKey.KEY_WEB_WEB_VIEW);
-      await driver.scrollUntilVisible(webView, back, dyScroll: -50.0);
-
-      // 戻る　
       await driver.tap(back);
     }, timeout: Timeout(Duration(seconds: 50))); // こんな感じでタイムアウトの秒数を変更できる
-
-
+    
   });
 
 }
