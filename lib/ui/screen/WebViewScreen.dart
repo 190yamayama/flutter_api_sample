@@ -1,5 +1,6 @@
 
 import 'package:flutter/material.dart';
+import 'package:flutter_api_sample/ui/WidgetKey.dart';
 import 'package:flutter_webview_plugin/flutter_webview_plugin.dart';
 
 const kAndroidUserAgent =
@@ -18,8 +19,6 @@ final Set<JavascriptChannel> jsChannels = [
 class WebViewScreen extends StatefulWidget {
   WebViewScreen({Key key, @required this.urlString}) : super(key: key);
   final String urlString;
-
-  static const String KEY_WEB_VIEW = "web_view";
 
   @override
   _WebViewScreenState createState() => _WebViewScreenState();
@@ -43,13 +42,21 @@ class WebViewScreenPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return WebviewScaffold(
-      key: Key(WebViewScreen.KEY_WEB_VIEW),
+      key: Key(WidgetKey.KEY_WEB_WEB_VIEW),
       url: urlString,
       javascriptChannels: jsChannels,
       mediaPlaybackRequiresUserGesture: false,
       appBar: AppBar(
         title: const Text(""),
         backgroundColor: Colors.greenAccent,
+        leading: IconButton(
+          key: Key(WidgetKey.KEY_WEB_APP_BAR_ICON_BUTTON),
+          icon: const Icon(
+            Icons.arrow_back,
+            key: Key(WidgetKey.KEY_WEB_APP_BAR_ICON),
+          ),
+          onPressed: () => Navigator.pop(context),
+        )
       ),
       withZoom: true,
       withLocalStorage: true,

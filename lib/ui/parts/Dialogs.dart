@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 class Dialogs {
   final BuildContext context;
@@ -43,6 +44,25 @@ class Dialogs {
           ],
         );
       },
+    );
+  }
+
+  Future<bool> showExitDialog() {
+    return showDialog(context: context,
+      builder: (context) => new AlertDialog(
+        title: new Text('確認'),
+        content: new Text('アプリを終了します。よろしいですか？'),
+        actions: <Widget>[
+          new FlatButton(
+            onPressed: () => Navigator.of(context).pop(false),
+            child: new Text('いいえ'),
+          ),
+          new FlatButton(
+            onPressed: () => SystemNavigator.pop(),
+            child: new Text('はい'),
+          ),
+        ],
+      ),
     );
   }
 

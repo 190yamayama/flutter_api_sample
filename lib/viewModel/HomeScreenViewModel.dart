@@ -77,4 +77,10 @@ class HomeScreenViewModel with ChangeNotifier {
         MaterialPageRoute(builder: (BuildContext context) => WebViewScreen(urlString: url))
     );
   }
+
+  Future<bool> showExitDialog(BuildContext context) {
+    final dialogs = Dialogs(context: context);
+    return dialogs.showExitDialog();
+  }
+
 }

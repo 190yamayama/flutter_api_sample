@@ -6,6 +6,7 @@
 // tree, read text, and verify that the values of widget properties are correct.
 
 import 'package:flutter/material.dart';
+import 'package:flutter_api_sample/ui/WidgetKey.dart';
 import 'package:flutter_api_sample/ui/screen/HomeScreen.dart';
 import 'package:flutter_api_sample/ui/screen/SplashScreen.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -39,7 +40,7 @@ void main() {
         );
 
         // スプラッシュ画像が表示されているか？
-        final splashImage = find.byKey(Key(SplashScreen.KEY_SPLASH_IMAGE));
+        final splashImage = find.byKey(Key(WidgetKey.KEY_SPLASH_SPLASH_IMAGE));
         expect(splashImage, findsOneWidget);
 
       });
@@ -71,23 +72,24 @@ void main() {
         );
 
         // タイトルが表示されているか？
-        final title = find.byKey(Key(HomeScreen.KEY_APP_BAR_TITLE));
+        final title = find.byKey(Key(WidgetKey.KEY_HOME_APP_BAR_TITLE));
         expect(title, findsOneWidget);
 
         // 検索アイコンが表示されているか？
-        final searchIcon = find.byKey(Key(HomeScreen.KEY_APP_BAR_ICON));
+        final searchIcon = find.byKey(Key(WidgetKey.KEY_HOME_APP_BAR_ICON));
         expect(searchIcon, findsOneWidget);
 
         // 検索ボタンが表示されているか？
-        final searchButton = find.byKey(Key(HomeScreen.KEY_APP_BAR_ICON_BUTTON));
+        final searchButton = find.byKey(Key(WidgetKey.KEY_HOME_APP_BAR_ICON_BUTTON));
         expect(searchButton, findsOneWidget);
 
         // リストビューが表示されているか？
-        final listView = find.byKey(Key(HomeScreen.KEY_APP_LIST_VIEW));
+        final listView = find.byKey(Key(WidgetKey.KEY_HOME_LIST_VIEW));
         expect(listView, findsOneWidget);
 
         // 検索実行
         await tester.tap(searchButton);
+
 
       });
 

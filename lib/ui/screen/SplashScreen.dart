@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_api_sample/ui/WidgetKey.dart';
 import 'package:flutter_api_sample/viewModel/SplashScreenViewModel.dart';
 import 'package:provider/provider.dart';
 
 class SplashScreen extends StatefulWidget {
   SplashScreen({Key key}) : super(key: key);
-
-  static const String KEY_SPLASH_IMAGE = "splash_image";
 
   @override
   _SplashScreenState createState() => _SplashScreenState();
@@ -36,7 +35,7 @@ class SplashScreenPage extends StatelessWidget {
     return Scaffold(
       body: Center(
           child: Image(
-              key: Key(SplashScreen.KEY_SPLASH_IMAGE),
+              key: Key(WidgetKey.KEY_SPLASH_SPLASH_IMAGE),
               image: AssetImage('assets/splash.png')
           ),
       ),

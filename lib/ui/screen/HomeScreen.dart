@@ -1,19 +1,13 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_api_sample/api/qitta/model/QiitaUser.dart';
+import 'package:flutter_api_sample/ui/WidgetKey.dart';
 import 'package:flutter_api_sample/viewModel/HomeScreenViewModel.dart';
 import 'package:provider/provider.dart';
 
 
 class HomeScreen extends StatefulWidget {
   HomeScreen({Key key}) : super(key: key);
-
-  static const String KEY_APP_BAR = "app_bar";
-  static const String KEY_APP_BAR_TITLE = "app_bar_title";
-  static const String KEY_APP_BAR_ICON = "app_bar_icon";
-  static const String KEY_APP_BAR_ICON_BUTTON = "app_bar_icon_button";
-  static const String KEY_APP_LIST_VIEW = "app_list_view";
-  static const String KEY_APP_LIST_VIEW_ROW = "app_list_view_row";
 
   @override
   _HomeScreenState createState() => _HomeScreenState();
@@ -33,62 +27,68 @@ class _HomeScreenState extends State<HomeScreen> {
 
 class HomeScreenPage extends StatelessWidget {
 
+  Future<bool> _onWillPop(BuildContext context) async {
+    return (await context.read<HomeScreenViewModel>().showExitDialog(context)) ?? false;
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        key: Key(HomeScreen.KEY_APP_BAR),
-        title: Text(
-            "Qiita 新着記事一覧",
-            key: Key(HomeScreen.KEY_APP_BAR_TITLE),
-        ),
-        backgroundColor: Colors.greenAccent,
-        leading: IconButton(
-          key: Key(HomeScreen.KEY_APP_BAR_ICON_BUTTON),
-          icon: const Icon(
-              Icons.search,
-              key: Key(HomeScreen.KEY_APP_BAR_ICON),
-          ),
-          onPressed: () => context.read<HomeScreenViewModel>().refresh(context),
-        ),
-      ),
-      body: RefreshIndicator(
-        onRefresh:() => context.read<HomeScreenViewModel>().refresh(context),
-        child: ListView.builder(
-          key: Key(HomeScreen.KEY_APP_LIST_VIEW),
-          itemBuilder: (BuildContext context, int index) {
-
-            var length = context.read<HomeScreenViewModel>().articles.length -1;
-            if (index == length) {
-              // 追加読み込み
-              context.read<HomeScreenViewModel>().loadMore(context);
-              // 画面にはローディング表示しておく
-              return new Center(
-                child: new Container(
-                  margin: const EdgeInsets.only(top: 8.0),
-                  width: 32.0,
-                  height: 32.0,
-                  child: const CircularProgressIndicator(),
-                ),
-              );
-            } else if (index > length) {
-              // ローディング表示より先は無し
-              return null;
-            }
-
-            // 行アイテム返却
-            return Container(
-              key: Key(HomeScreen.KEY_APP_LIST_VIEW_ROW),
-              child: rowWidget(context, index),
-              alignment: Alignment.bottomLeft,
-              decoration: BoxDecoration(
-                  border: Border.all(color: Colors.grey)
+    return WillPopScope(
+        onWillPop: () => _onWillPop(context),
+        child: Scaffold(
+          appBar: AppBar(
+            key: Key(WidgetKey.KEY_HOME_APP_BAR),
+            title: Text(
+              "Qiita 新着記事一覧",
+              key: Key(WidgetKey.KEY_HOME_APP_BAR_TITLE),
+            ),
+            backgroundColor: Colors.greenAccent,
+            leading: IconButton(
+              key: Key(WidgetKey.KEY_HOME_APP_BAR_ICON_BUTTON),
+              icon: const Icon(
+                Icons.search,
+                key: Key(WidgetKey.KEY_HOME_APP_BAR_ICON),
               ),
-            );
-          },
-          itemCount: context.watch<HomeScreenViewModel>().articles.length,
-        ),
-      ),
+              onPressed: () => context.read<HomeScreenViewModel>().refresh(context),
+            ),
+          ),
+          body: RefreshIndicator(
+            onRefresh:() => context.read<HomeScreenViewModel>().refresh(context),
+            child: ListView.builder(
+              key: Key(WidgetKey.KEY_HOME_LIST_VIEW),
+              itemBuilder: (BuildContext context, int index) {
+
+                var length = context.read<HomeScreenViewModel>().articles.length -1;
+                if (index == length) {
+                  // 追加読み込み
+                  context.read<HomeScreenViewModel>().loadMore(context);
+                  // 画面にはローディング表示しておく
+                  return new Center(
+                    child: new Container(
+                      margin: const EdgeInsets.only(top: 8.0),
+                      width: 32.0,
+                      height: 32.0,
+                      child: const CircularProgressIndicator(),
+                    ),
+                  );
+                } else if (index > length) {
+                  // ローディング表示より先は無し
+                  return null;
+                }
+
+                // 行アイテム返却
+                return Container(
+                  child: rowWidget(context, index),
+                  alignment: Alignment.bottomLeft,
+                  decoration: BoxDecoration(
+                      border: Border.all(color: Colors.grey)
+                  ),
+                );
+              },
+              itemCount: context.watch<HomeScreenViewModel>().articles.length,
+            ),
+          ),
+        )
     );
   }
 
@@ -160,6 +160,7 @@ class HomeScreenPage extends StatelessWidget {
         crossAxisAlignment: WrapCrossAlignment.start,
         children: [
           FlatButton(
+              key: Key(WidgetKey.KEY_HOME_LIST_VIEW_ROW_TITLE + "_$index"),
               child: Text(
                 "${article.title}",
                 style: TextStyle(
