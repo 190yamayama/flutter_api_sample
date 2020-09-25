@@ -3,9 +3,9 @@ import 'ApiResposeType.dart';
 
 class ApiResponse {
 
-  ApiResponseType apiStatus;
+  final ApiResponseType apiStatus;
   final dynamic result;
-  String _customMessage;
+  final String _customMessage;
 
   // カスタムメッセージが指定されている場合はそっちを返却
   // そうじゃない場合はエラーコードで決まったメッセージを返却
