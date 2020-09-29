@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'QiitaClient.dart';
+part of 'qiita_client.dart';
 
 // **************************************************************************
 // RetrofitGenerator

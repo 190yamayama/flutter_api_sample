@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'QiitaUser.dart';
+part of 'qiita_user.dart';
 
 // **************************************************************************
 // JsonSerializableGenerator

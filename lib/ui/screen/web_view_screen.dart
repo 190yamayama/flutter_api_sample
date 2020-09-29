@@ -1,7 +1,7 @@
 
 import 'dart:async';
 import 'package:flutter/material.dart';
-import 'package:flutter_api_sample/ui/WidgetKey.dart';
+import 'package:flutter_api_sample/ui/widget_keys.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
 class WebViewScreen extends StatefulWidget {

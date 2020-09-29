@@ -3,7 +3,7 @@
 // material.dartがインポートされているファイルもimportできません。
 // つまり、画面のdartファイルはimport不可能です。
 // 参考）https://github.com/flutter/flutter/issues/56192
-import 'package:flutter_api_sample/ui/WidgetKey.dart';
+import 'package:flutter_api_sample/ui/widget_keys.dart';
 import 'package:flutter_driver/flutter_driver.dart';
 import 'package:test/test.dart';
 

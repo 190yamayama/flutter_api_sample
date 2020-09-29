@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_api_sample/api/ApiResposeType.dart';
-import 'package:flutter_api_sample/api/qitta/model/QiitaArticle.dart';
-import 'package:flutter_api_sample/repository/QiitaRepository.dart';
-import 'package:flutter_api_sample/ui/parts/Dialogs.dart';
-import 'package:flutter_api_sample/ui/screen/WebViewScreen.dart';
+import 'package:flutter_api_sample/api/api_respose_type.dart';
+import 'package:flutter_api_sample/api/qitta/model/qiita_article.dart';
+import 'package:flutter_api_sample/repository/qiita_repository.dart';
+import 'package:flutter_api_sample/ui/parts/dialogs.dart';
+import 'package:flutter_api_sample/ui/screen/web_view_screen.dart';
 
 class HomeScreenViewModel with ChangeNotifier {
 

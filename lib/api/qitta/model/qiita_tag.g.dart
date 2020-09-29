@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'QiitaTag.dart';
+part of 'qiita_tag.dart';
 
 // **************************************************************************
 // JsonSerializableGenerator

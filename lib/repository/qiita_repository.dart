@@ -2,15 +2,15 @@
 import 'dart:developer';
 
 import 'package:dio/dio.dart';
-import 'package:flutter_api_sample/api/ApiResponse.dart';
-import 'package:flutter_api_sample/api/ApiResposeType.dart';
-import 'package:flutter_api_sample/api/qitta/QiitaClient.dart';
+import 'package:flutter_api_sample/api/api_response.dart';
+import 'package:flutter_api_sample/api/api_respose_type.dart';
+import 'package:flutter_api_sample/api/qitta/qiita_client.dart';
 
 class QiitaRepository {
 
   final QiitaClient _client;
 
-  QiitaRepository({QiitaClient client}):
+  QiitaRepository([QiitaClient client]):
         _client = client ?? QiitaClient(Dio())
   ;
 
@@ -34,12 +34,15 @@ class QiitaRepository {
               // 失敗した応答のエラーコードとメッセージを取得するサンプル
               // ここでエラーコードのハンドリングると良さげ
               final res = (e as DioError).response;
-              log("Got error : ${res.statusCode} -> ${res.statusMessage}");
-              errorCode = res.statusCode;
-              errorMessage = res.statusMessage;
+              if (res != null) {
+                errorCode = res.statusCode;
+                errorMessage = res.statusMessage;
+              }
               break;
             default:
           }
+          log("Got error : $errorCode -> $errorMessage");
+
           var apiResponseType = ApiResponse.convert(errorCode);
           // とりあえずここではサーバー側のエラーメッセージを表示するようにしとく
           return ApiResponse(apiResponseType, errorMessage);

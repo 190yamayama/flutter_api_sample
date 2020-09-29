@@ -1,5 +1,5 @@
-import 'package:flutter_api_sample/api/ApiResposeType.dart';
-import 'package:flutter_api_sample/repository/QiitaRepository.dart';
+import 'package:flutter_api_sample/api/api_respose_type.dart';
+import 'package:flutter_api_sample/repository/qiita_repository.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 // テストコマンド
