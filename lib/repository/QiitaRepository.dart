@@ -10,7 +10,7 @@ class QiitaRepository {
 
   final QiitaClient _client;
 
-  QiitaRepository({QiitaClient client}):
+  QiitaRepository([QiitaClient client]):
         _client = client ?? QiitaClient(Dio())
   ;
 
