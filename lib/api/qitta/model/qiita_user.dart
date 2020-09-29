@@ -1,7 +1,7 @@
 
 import 'package:json_annotation/json_annotation.dart';
 import 'dart:convert';
-part 'QiitaUser.g.dart';
+part 'qiita_user.g.dart';
 
 @JsonSerializable()
 class QiitaUser {

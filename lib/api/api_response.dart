@@ -1,5 +1,5 @@
 
-import 'ApiResposeType.dart';
+import 'api_respose_type.dart';
 
 class ApiResponse {
 

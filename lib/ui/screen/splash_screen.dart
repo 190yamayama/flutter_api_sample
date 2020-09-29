@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_api_sample/ui/WidgetKey.dart';
-import 'package:flutter_api_sample/viewModel/SplashScreenViewModel.dart';
+import 'package:flutter_api_sample/ui/widget_keys.dart';
+import 'package:flutter_api_sample/viewModel/splash_screen_view_model.dart';
 import 'package:provider/provider.dart';
 
 class SplashScreen extends StatefulWidget {

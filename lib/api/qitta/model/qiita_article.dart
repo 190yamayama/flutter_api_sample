@@ -1,13 +1,13 @@
 import 'dart:convert';
 
-import 'package:flutter_api_sample/api/converter/CustomDateTimeConverter.dart';
+import 'package:flutter_api_sample/api/converter/custom_date_time_converter.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:intl/intl.dart';
 import 'package:json_annotation/json_annotation.dart';
-import 'QiitaTag.dart';
-import 'QiitaUser.dart';
+import 'qiita_tag.dart';
+import 'qiita_user.dart';
 
-part 'QiitaArticle.g.dart';
+part 'qiita_article.g.dart';
 
 @CustomDateTimeConverter()
 @JsonSerializable(explicitToJson: true)

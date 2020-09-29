@@ -1,8 +1,8 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_api_sample/api/qitta/model/QiitaUser.dart';
-import 'package:flutter_api_sample/ui/WidgetKey.dart';
-import 'package:flutter_api_sample/viewModel/HomeScreenViewModel.dart';
+import 'package:flutter_api_sample/api/qitta/model/qiita_user.dart';
+import 'package:flutter_api_sample/ui/widget_keys.dart';
+import 'package:flutter_api_sample/viewModel/home_screen_view_model.dart';
 import 'package:provider/provider.dart';
 
 

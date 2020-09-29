@@ -2,9 +2,9 @@
 import 'dart:developer';
 
 import 'package:dio/dio.dart';
-import 'package:flutter_api_sample/api/ApiResponse.dart';
-import 'package:flutter_api_sample/api/ApiResposeType.dart';
-import 'package:flutter_api_sample/api/qitta/QiitaClient.dart';
+import 'package:flutter_api_sample/api/api_response.dart';
+import 'package:flutter_api_sample/api/api_respose_type.dart';
+import 'package:flutter_api_sample/api/qitta/qiita_client.dart';
 
 class QiitaRepository {
 

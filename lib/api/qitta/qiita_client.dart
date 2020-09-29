@@ -1,8 +1,8 @@
 import 'package:retrofit/retrofit.dart';
 import 'package:dio/dio.dart' hide Headers;
-import 'model/QiitaArticle.dart';
+import 'model/qiita_article.dart';
 
-part 'QiitaClient.g.dart';
+part 'qiita_client.g.dart';
 
 @RestApi(baseUrl: "https://qiita.com/api")
 abstract class QiitaClient {
