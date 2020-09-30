@@ -1,13 +1,16 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_api_sample/api/qitta/model/qiita_user.dart';
+import 'package:flutter_api_sample/repository/qiita_repository.dart';
 import 'package:flutter_api_sample/ui/widget_keys.dart';
 import 'package:flutter_api_sample/viewModel/home_screen_view_model.dart';
 import 'package:provider/provider.dart';
 
 
 class HomeScreen extends StatefulWidget {
-  HomeScreen({Key key}) : super(key: key);
+  HomeScreen([Key key, this.qiitaRepository]) : super(key: key);
+
+  final QiitaRepository qiitaRepository;
 
   @override
   _HomeScreenState createState() => _HomeScreenState();
@@ -18,7 +21,7 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
-      create: (context) => HomeScreenViewModel(),
+      create: (context) => HomeScreenViewModel(widget.qiitaRepository ?? QiitaRepository()),
       child: HomeScreenPage(),
     );
   }
