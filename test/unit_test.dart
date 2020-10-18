@@ -1,4 +1,4 @@
-import 'package:flutter_api_sample/api/api_respose_type.dart';
+import 'package:flutter_api_sample/api/api_response_type.dart';
 import 'package:flutter_api_sample/api/qitta/model/qiita_article.dart';
 import 'package:flutter_api_sample/api/qitta/qiita_client.dart';
 import 'package:flutter_api_sample/repository/qiita_repository.dart';
